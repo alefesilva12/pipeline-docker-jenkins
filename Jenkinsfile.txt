@@ -1,0 +1,28 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Clonar Repositório') {
+            steps {
+                git 'https://github.com/seu-usuario/pipeline-docker-jenkins.git'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                script {
+                    docker.build('app-build', '-f Dockerfile.build .')
+                }
+            }
+        }
+
+        stage('Test') {
+            steps {
+                script {
+                    def testImage = docker.build('app-test', '-f Dockerfile.test .')
+                    testImage.run()
+                }
+            }
+        }
+    }
+}

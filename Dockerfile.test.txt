@@ -1,0 +1,7 @@
+FROM openjdk:17
+WORKDIR /app
+COPY src /app/src
+COPY test /app/test
+COPY lib /app/lib
+RUN mkdir bin && javac -cp ".:lib/*" src/*.java test/*.java -d bin
+CMD ["java", "-cp", "bin:lib/*", "org.junit.runner.JUnitCore", "ConversorTest"]
